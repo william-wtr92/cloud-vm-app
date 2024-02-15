@@ -2,18 +2,33 @@
   "name": "cloud-vm-app",
   "version": "0.1.0",
   "private": true,
+  "type": "commonjs",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "kn:latest": "knex migrate:latest",
+    "kn:rollback": "knex migrate:rollback",
+    "kn:make": "knex migrate:make $1",
+    "kn:seed": "ts-node -r tsconfig-paths/register ./node_modules/.bin/knex seed:run"
   },
   "dependencies": {
+    "deepmerge": "^4.3.1",
+    "dotenv": "^16.4.4",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
     "next": "14.1.0",
+    "objection": "^3.1.4",
+    "pg": "^8.11.3",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

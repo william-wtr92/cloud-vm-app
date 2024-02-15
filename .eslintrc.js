@@ -29,6 +29,7 @@ module.exports = {
     semi: ["error", "never"],
     "no-console": "error",
     "no-implicit-globals": "error",
+    "@typescript-eslint/no-explicit-any": "off",
     "no-warning-comments": ["error", { terms: ["fixme", "todo"] }],
     "newline-before-return": "error",
     curly: "error",

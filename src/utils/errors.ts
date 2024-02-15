@@ -1,0 +1,67 @@
+export class AppError extends Error {
+  #errors?: string[] = []
+  #httpCode?: number
+  #errorCode: string = "error.app"
+
+  constructor(
+    errors: string[] = ["Oops. Something went wrong"],
+    httpCode: number = 500,
+    errorCode: string,
+  ) {
+    super(errors.join(" | "))
+
+    this.#errors = errors
+    this.#httpCode = httpCode
+    this.#errorCode = errorCode
+  }
+
+  get errors() {
+    return this.#errors
+  }
+
+  get httpCode() {
+    return this.#httpCode
+  }
+
+  get errorCode() {
+    return this.#errorCode
+  }
+}
+
+export class NotFoundError extends AppError {
+  constructor(errors = ["Not found"]) {
+    super(errors, 404, "error.app.notFound")
+  }
+}
+
+export class InvalidArgumentError extends AppError {
+  constructor(errors = ["Invalid arguments"]) {
+    super(errors, 422, "error.app.InvalidArgumentError")
+  }
+}
+
+export class InvalidNewPasswordError extends AppError {
+  constructor(
+    errors = ["The new password must be different from the current one"],
+  ) {
+    super(errors, 422, "error.app.InvalidArgumentError")
+  }
+}
+
+export class InvalidCredentialsError extends AppError {
+  constructor(errors = ["Invalid credentials"]) {
+    super(errors, 401, "error.app.InvalidCredentialsError")
+  }
+}
+
+export class InvalidSessionError extends AppError {
+  constructor(errors = ["Invalid session"]) {
+    super(errors, 403, "error.app.InvalidSessionError")
+  }
+}
+
+export class InvalidAccessError extends AppError {
+  constructor(errors = ["Not enough permission."]) {
+    super(errors, 403, "error.app.InvalidAccessError")
+  }
+}
