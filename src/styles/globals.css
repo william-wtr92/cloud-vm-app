@@ -1,3 +1,14 @@
 :root {
+    --primary: #122DB0;
+    --secondary: #0015ba;
+    --grey: #E5E5E5;
+    --error: #FF0000;
+    --white: #FFFFFF;
 
+    margin: 0;
+    padding: 0;
+}
+
+main{
+    height: 98vh;
 }

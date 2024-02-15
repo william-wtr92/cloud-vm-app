@@ -1,7 +1,6 @@
 import Head from "next/head"
 import styles from "@/styles/pages/Home.module.css"
-import { VmCard } from "@/components/VmCard"
-import { Login } from "@/components/Login"
+import { VmCard } from "@/components/ui/VmCard"
 
 export default function Home() {
   return (
@@ -14,9 +13,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.home}>
-        <h1>VM Azure Manager</h1>
         <VmCard />
-        <Login />
       </main>
     </>
   )

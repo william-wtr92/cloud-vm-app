@@ -1,0 +1,33 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.wrapper > span::first-letter {
+    text-transform: uppercase;
+}
+
+.wrapper > span {
+    margin-left: 0.5rem;
+    font-weight: 600;
+}
+
+.input {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    border: 1px solid var(--grey);
+    border-radius: 1rem;
+    font-weight: 200;
+}
+
+.input:focus {
+    border: 1px solid var(--primary);
+}
+
+.errorMessage {
+    color: var(--error);
+    font-size: 0.8rem;
+}

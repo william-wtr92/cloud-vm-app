@@ -1,4 +1,5 @@
 import { z } from "zod"
+import * as yup from "yup"
 
 export const emailValidator: z.ZodString = z
   .string()
@@ -15,3 +16,13 @@ export const passwordValidator: z.ZodString = z
     "One special character",
   )
   .min(8, "Must be at least 8 characters in length")
+
+export const loginValidator = yup.object().shape({
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup.string().required("Password is required"),
+})
+
+export type LoginInitialValues = {
+  email: string
+  password: string
+}

@@ -7,7 +7,11 @@ export const up = async (knex: Knex): Promise<void> => {
       table.text("right").notNullable()
     })
     .then(function () {
-      return knex("role").insert([{ right: "admin" }, { right: "user" }])
+      return knex("role").insert([
+        { right: "owner" },
+        { right: "member" },
+        { right: "reader" },
+      ])
     })
 
   await knex.schema.createTable("user", (table: Knex.TableBuilder) => {
@@ -18,6 +22,10 @@ export const up = async (knex: Knex): Promise<void> => {
     table.timestamps(true, true, true)
     table.string("firstname").notNullable()
     table.string("lastname").notNullable()
+    table.string("azureTenantId").notNullable()
+    table.string("azureClientId").notNullable()
+    table.string("azureClientSecret").notNullable()
+    table.string("azureSubscriptionId").notNullable()
     table.integer("roleId").references("id").inTable("role").defaultTo(1)
   })
 }
