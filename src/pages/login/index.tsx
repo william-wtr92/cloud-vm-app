@@ -2,6 +2,7 @@ import React from "react"
 import { NextRouter, useRouter } from "next/router"
 import Image from "next/image"
 import { Formik, Form } from "formik"
+import { toFormikValidationSchema } from "zod-formik-adapter"
 
 import styles from "@/styles/pages/Login.module.css"
 import {
@@ -50,7 +51,7 @@ const Login = () => {
           <Formik
             className={styles.loginForm}
             initialValues={initialValues}
-            validationSchema={loginValidator}
+            validationSchema={toFormikValidationSchema(loginValidator)}
             onSubmit={handleSubmit}
           >
             {() => {
