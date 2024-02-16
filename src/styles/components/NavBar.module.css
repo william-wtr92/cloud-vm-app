@@ -26,8 +26,27 @@
     box-shadow: 4px 4px 4px 4px var(--grey);
 }
 
-.infos > div > span {
+.infos > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.infos > div > :nth-child(1) {
     font-weight: 600;
 }
+
+.infos > div > :nth-child(2) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    white-space: nowrap;
+}
+
+.role:first-letter{
+    text-transform: uppercase;
+}
+
 
 

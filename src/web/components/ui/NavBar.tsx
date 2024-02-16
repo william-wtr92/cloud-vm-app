@@ -1,6 +1,29 @@
+import { parseCookies } from "nookies"
+
+import parseToken from "@/web/services/utils/parseToken"
 import styles from "@/styles/components/NavBar.module.css"
+import { useGetUserDetail } from "@/web/services/userService"
+import { NextRouter, useRouter } from "next/router"
+import { useCallback } from "react"
+import Button from "@/components/utils/Button"
 
 export const NavBar = () => {
+  const router: NextRouter = useRouter()
+
+  const cookies = parseCookies()
+  const jwtToken: string = cookies["token"]
+  const session = parseToken(jwtToken)
+  const userId = session ? session.user.id : null
+
+  const { userDetailData, userDetailLoading } = useGetUserDetail(userId)
+
+  const user = !userDetailLoading && userDetailData
+
+  const handleClearCookies = useCallback(() => {
+    document.cookie = "token" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+    router.push("/login")
+  }, [router])
+
   return (
     <div className={styles.navContainer}>
       <div>
@@ -8,14 +31,18 @@ export const NavBar = () => {
       </div>
       <div className={styles.infos}>
         <div>
-          <span>Client:</span> d751438b-68ec-4be3-8437-d65ce2f762db
+          <span>Email:</span>
+          <span>{user.email}</span>
         </div>
         <div>
-          <span>Subscription:</span> f41fe805-fdc1-4ee8-9844-dbb3c12bd610
+          <span>Client:</span>
+          <span>{user.azureClientId}</span>
         </div>
         <div>
-          <span>Tenant:</span> b7b023b8-7c32-4c02-92a6-c8cdaa1d189c
+          <span>Role:</span>
+          <span className={styles.role}>{user.roleName}</span>
         </div>
+        <Button label={"Logout"} onClickAction={handleClearCookies} />
       </div>
     </div>
   )

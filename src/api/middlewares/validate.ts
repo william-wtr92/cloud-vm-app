@@ -23,14 +23,19 @@ const validate = ({
   params?: z.ZodType<any, any>
   query?: z.ZodType<any, any>
 }) => {
-  const validator = z.object({
-    body: body ?? z.object({}).passthrough(),
-    params: params ?? z.object({}).optional(),
-    query: query ?? z.object({}).passthrough(),
-  })
-
   return async (ctx: Ctx) => {
     const { req, res, next } = ctx
+
+    let validator = z.object({
+      params: params ?? z.object({}).optional(),
+      query: query ?? z.object({}).passthrough(),
+    })
+
+    if (["POST", "PUT", "PATCH"].includes(req.method?.toUpperCase() ?? "")) {
+      validator = validator.extend({
+        body: body ?? z.object({}).passthrough(),
+      })
+    }
 
     try {
       ctx.locals = await validator.parseAsync({

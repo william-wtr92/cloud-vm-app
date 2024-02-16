@@ -6,9 +6,15 @@ class UserModel extends BaseModel {
   static tableName: string = "user"
 
   id!: number
+  email!: string
+  firstname!: string
+  lastname!: string
   passwordSalt!: string
   passwordHash!: string
-  email!: string
+  azureTenantId!: string
+  azureClientId!: string
+  azureClientSecret!: string
+  azureSubscriptionId!: string
   roleData!: RoleModel
 
   static relationMappings() {
