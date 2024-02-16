@@ -7,6 +7,8 @@ import validate from "@/api/middlewares/validate"
 import { generateRandomString } from "@/utils/randomVmName"
 import { RequestOption } from "@/utils/validators/loginValidator"
 import { CreateVm } from "@/utils/types/mw.types"
+import { scheduleVmDeletion } from "@/utils/scheduleVmDeletion"
+import { DeleteVmInitialValues } from "@/utils/validators/createVmValidator"
 
 config()
 
@@ -56,9 +58,25 @@ const handler = mw({
         },
       }
 
-      const response = await axios.put(url, data, options)
+      try {
+        const response = await axios.put(url, data, options)
 
-      return res.send({ result: response.data })
+        const deletionData: DeleteVmInitialValues = {
+          subscriptionId: process.env.AZURE_SUBSCRIPTION_ID!,
+          resourceGroupName: process.env.AZURE_PROCESSING_GROUP_NAME!,
+          labName: process.env.AZURE_LABS_GROUP_NAME!,
+          vmName: response.data.name,
+          jwt: formatToken,
+        }
+
+        await scheduleVmDeletion(deletionData)
+
+        return res.send({ result: response.data })
+      } catch (error) {
+        return res
+          .status(500)
+          .send({ error: "VM creation failed. Please try again." })
+      }
     },
   ],
 })
