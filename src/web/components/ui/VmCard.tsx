@@ -1,5 +1,7 @@
-import styles from "@/styles/components/VmCard.module.css"
 import Image from "next/image"
+import React from "react"
+
+import styles from "@/styles/components/VmCard.module.css"
 import Button from "@/components/utils/Button"
 
 export const VmCard = () => {
@@ -30,7 +32,7 @@ export const VmCard = () => {
       image: "/images/windows.png",
       alt: "Windows 11 logo",
       status: "Running",
-      ip: "12.0.0.1",
+      ip: "123.67.78.92",
       username: "admin",
       password: "admin",
     },
@@ -50,7 +52,7 @@ export const VmCard = () => {
     <div className={styles.vmcardContainer}>
       {cardMockData.map((card) => {
         return (
-          <>
+          <React.Fragment key={card.id}>
             {card.status === "Running" ? (
               <div key={card.id} className={styles.vmCard}>
                 <h3 className={styles.title}>{card.name}</h3>
@@ -60,7 +62,6 @@ export const VmCard = () => {
                     src={card.image}
                     alt={card.alt}
                     fill={true}
-                    layout={"fill"}
                   />
                 </div>
                 <div className={styles.status}>
@@ -74,14 +75,17 @@ export const VmCard = () => {
                 <div>
                   {card.status === "Running" && (
                     <div className={styles.infos}>
-                      <div>
-                        address: <span>{card.ip}</span>
+                      <div className={styles.infosCard}>
+                        <span>address</span>
+                        <span> {card.ip}</span>
                       </div>
                       <div>
-                        user: <span>{card.username}</span>
+                        <span>username</span>
+                        <span> {card.username}</span>
                       </div>
                       <div>
-                        password: <span>{card.password}</span>
+                        <span>password</span>
+                        <span> {card.password}</span>
                       </div>
                     </div>
                   )}
@@ -96,7 +100,6 @@ export const VmCard = () => {
                     src={card.image}
                     alt={card.alt}
                     fill={true}
-                    layout={"fill"}
                   />
                 </div>
                 <div className={styles.status}>
@@ -108,7 +111,7 @@ export const VmCard = () => {
                 </div>
               </div>
             )}
-          </>
+          </React.Fragment>
         )
       })}
     </div>

@@ -14,6 +14,7 @@
     "kn:seed": "ts-node -r tsconfig-paths/register ./node_modules/.bin/knex seed:run"
   },
   "dependencies": {
+    "@fontsource/chivo": "^5.0.8",
     "axios": "^1.6.7",
     "classnames": "^2.5.1",
     "deepmerge": "^4.3.1",
