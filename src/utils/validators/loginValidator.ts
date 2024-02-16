@@ -25,6 +25,7 @@ export type AzureEncodeUrl = {
 
 export type RequestOption = {
   headers: {
+    Authorization?: string
     "Content-Type": string
   }
 }

@@ -1,8 +1,11 @@
 import Image from "next/image"
 import React from "react"
+import { parseCookies } from "nookies"
 
 import styles from "@/styles/components/VmCard.module.css"
 import Button from "@/components/utils/Button"
+import createVmService from "@/web/services/createVmService"
+import { CreateVmInitialValues } from "@/utils/validators/createVmValidator"
 
 export const VmCard = () => {
   const cardMockData = [
@@ -47,6 +50,18 @@ export const VmCard = () => {
       password: "admin",
     },
   ]
+
+  const cookies = parseCookies()
+  const azureToken: string = cookies["azure_token"]
+
+  const handleSubmit = async (): Promise<void> => {
+    const values: CreateVmInitialValues = {
+      jwt: azureToken,
+      osType: "Windows",
+    }
+
+    await createVmService(values)
+  }
 
   return (
     <div className={styles.vmcardContainer}>
@@ -107,7 +122,7 @@ export const VmCard = () => {
                   <p className={styles.down}></p>
                 </div>
                 <div className={styles.startButton}>
-                  <Button label={"Start"} />
+                  <Button label={"Start"} onClickAction={handleSubmit} />
                 </div>
               </div>
             )}

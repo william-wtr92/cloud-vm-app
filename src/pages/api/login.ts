@@ -78,6 +78,10 @@ const handler = mw({
       const response = await axios.post(url, data, options)
       azureToken = response.data.access_token
 
+      if (azureToken.length === 0) {
+        throw new Error("Azure token not found")
+      }
+
       res.send({ result: { jwt, azure_token: azureToken } })
     },
   ],

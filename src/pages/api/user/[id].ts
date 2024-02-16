@@ -3,7 +3,7 @@ import { z } from "zod"
 import mw from "@/api/middlewares/mw"
 import UserModel from "@/api/models/UserModel"
 import validate from "@/api/middlewares/validate"
-import { getUserId } from "@/utils/types/mw.types"
+import { GetUserId } from "@/utils/types/mw.types"
 import { idValidator } from "@/utils/validators/genericValidator"
 import { sanitizeUser } from "@/utils/dto/userDTO"
 
@@ -19,7 +19,7 @@ const handler = mw({
         query: { id },
       },
       res,
-    }: getUserId): Promise<void> => {
+    }: GetUserId): Promise<void> => {
       const user: UserModel | undefined = await UserModel.query()
         .findOne({ id })
         .withGraphFetched("roleData")

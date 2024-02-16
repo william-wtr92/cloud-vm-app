@@ -15,11 +15,23 @@ export interface Login {
 }
 
 // User ID Types for Middleware
-export interface getUserId {
+export interface GetUserId {
   locals: {
     query: {
       id: string
     }
   }
+  res: any
+}
+
+// Create VM Types for Middleware
+
+export interface CreateVm {
+  locals: {
+    body: {
+      osType: string
+    }
+  }
+  req: any
   res: any
 }
