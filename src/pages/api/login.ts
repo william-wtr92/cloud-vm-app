@@ -1,5 +1,8 @@
 import jsonwebtoken from "jsonwebtoken"
 import { z } from "zod"
+import axios from "axios"
+import qs from "qs"
+import { config } from "dotenv"
 
 import mw from "@/api/middlewares/mw"
 import { InvalidCredentialsError } from "@/utils/errors"
@@ -7,10 +10,14 @@ import UserModel from "@/api/models/UserModel"
 import validate from "@/api/middlewares/validate"
 import configDb from "@/api/config/configDb"
 import {
+  AzureEncodeUrl,
   emailValidator,
   passwordValidator,
+  RequestOption,
 } from "@/utils/validators/loginValidator"
 import { Login } from "@/utils/types/mw.types"
+
+config()
 
 const handler = mw({
   POST: [
@@ -50,7 +57,28 @@ const handler = mw({
         { expiresIn: configDb.security.jwt.expiresIn },
       )
 
-      res.send({ result: jwt })
+      // Azure generated token
+      const config: AzureEncodeUrl = {
+        grant_type: "client_credentials",
+        client_id: process.env.AZURE_CLIENT_ID!,
+        client_secret: process.env.AZURE_CLIENT_SECRET!,
+        scope: "https://management.azure.com/.default",
+      }
+
+      const url: string = `https://login.microsoftonline.com/${process.env.AZURE_TENANT_URL}/oauth2/v2.0/token`
+      const data: string = qs.stringify(config)
+      const options: RequestOption = {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+
+      let azureToken: string = ""
+
+      const response = await axios.post(url, data, options)
+      azureToken = response.data.access_token
+
+      res.send({ result: { jwt, azure_token: azureToken } })
     },
   ],
 })

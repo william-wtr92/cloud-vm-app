@@ -16,6 +16,19 @@ export const passwordValidator: z.ZodString = z
   )
   .min(8, "Must be at least 8 characters in length")
 
+export type AzureEncodeUrl = {
+  grant_type: string
+  client_id: string
+  client_secret: string
+  scope: string
+}
+
+export type RequestOption = {
+  headers: {
+    "Content-Type": string
+  }
+}
+
 export const loginValidator = z.object({
   email: emailValidator,
   password: passwordValidator,

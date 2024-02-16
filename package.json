@@ -26,6 +26,7 @@
     "nookies": "^2.5.2",
     "objection": "^3.1.4",
     "pg": "^8.11.3",
+    "qs": "^6.11.2",
     "react": "^18",
     "react-dom": "^18",
     "swr": "^2.2.5",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20",
+    "@types/qs": "^6.9.11",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^7.0.1",

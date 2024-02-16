@@ -19,8 +19,13 @@ const loginService = async (values: LoginInitialValues) => {
       },
     })
 
-    setCookie(null, "token", result, {
-      maxAge: 30 * 24 * 60 * 60,
+    setCookie(null, "token", result.jwt, {
+      maxAge: 3600,
+      path: "/",
+    })
+
+    setCookie(null, "azure_token", result.azure_token, {
+      maxAge: 3600,
       path: "/",
     })
 
