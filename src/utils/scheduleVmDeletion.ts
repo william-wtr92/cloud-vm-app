@@ -1,6 +1,6 @@
 import axios from "axios"
 
-import { DeleteVmInitialValues } from "@/utils/validators/createVmValidator"
+import { VmInitialValues } from "@/utils/validators/createVmValidator"
 
 export const scheduleVmDeletion = async ({
   subscriptionId,
@@ -8,7 +8,7 @@ export const scheduleVmDeletion = async ({
   labName,
   vmName,
   jwt,
-}: DeleteVmInitialValues): Promise<void> => {
+}: VmInitialValues): Promise<void> => {
   setTimeout(async (): Promise<void> => {
     const url: string = `https://management.azure.com/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.DevTestLab/labs/${labName}/virtualmachines/${vmName}?api-version=2018-09-15`
 

@@ -8,7 +8,8 @@ import { generateRandomString } from "@/utils/randomVmName"
 import { RequestOption } from "@/utils/validators/loginValidator"
 import { CreateVm } from "@/utils/types/mw.types"
 import { scheduleVmDeletion } from "@/utils/scheduleVmDeletion"
-import { DeleteVmInitialValues } from "@/utils/validators/createVmValidator"
+import { VmInitialValues } from "@/utils/validators/createVmValidator"
+import { scheduleVmStart } from "@/utils/scheduleVmStart"
 
 config()
 
@@ -61,7 +62,7 @@ const handler = mw({
       try {
         const response = await axios.put(url, data, options)
 
-        const deletionData: DeleteVmInitialValues = {
+        const vmData: VmInitialValues = {
           subscriptionId: process.env.AZURE_SUBSCRIPTION_ID!,
           resourceGroupName: process.env.AZURE_PROCESSING_GROUP_NAME!,
           labName: process.env.AZURE_LABS_GROUP_NAME!,
@@ -69,7 +70,9 @@ const handler = mw({
           jwt: formatToken,
         }
 
-        await scheduleVmDeletion(deletionData)
+        await scheduleVmStart(vmData)
+
+        await scheduleVmDeletion(vmData)
 
         return res.send({ result: response.data })
       } catch (error) {

@@ -3,7 +3,7 @@ export type CreateVmInitialValues = {
   osType: string
 }
 
-export interface DeleteVmInitialValues {
+export interface VmInitialValues {
   subscriptionId: string
   resourceGroupName: string
   labName: string
