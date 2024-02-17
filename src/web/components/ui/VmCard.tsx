@@ -1,11 +1,14 @@
 import Image from "next/image"
-import React from "react"
+import React, { useState } from "react"
 import { parseCookies } from "nookies"
 
 import styles from "@/styles/components/VmCard.module.css"
 import Button from "@/components/utils/Button"
 import createVmService from "@/web/services/createVmService"
-import { CreateVmInitialValues } from "@/utils/validators/createVmValidator"
+import {
+  CreateVmInitialValues,
+  StartedVms,
+} from "@/utils/validators/createVmValidator"
 
 export const VmCard = () => {
   const cardMockData = [
@@ -15,9 +18,7 @@ export const VmCard = () => {
       image: "/images/windows.png",
       alt: "Windows 10 logo",
       status: "Down",
-      ip: "12.0.0.1",
-      username: "admin",
-      password: "admin",
+      osType: "Windows 10",
     },
     {
       id: 2,
@@ -25,110 +26,96 @@ export const VmCard = () => {
       image: "/images/ubuntu.png",
       alt: "Ubuntu logo",
       status: "Down",
-      ip: "12.0.0.1",
-      username: "admin",
-      password: "admin",
+      osType: "Ubuntu",
     },
     {
       id: 3,
-      name: "VM Windows 11",
-      image: "/images/windows.png",
-      alt: "Windows 11 logo",
-      status: "Running",
-      ip: "123.67.78.92",
-      username: "admin",
-      password: "admin",
+      name: "VM CentOS",
+      image: "/images/centos.png",
+      alt: "xfce logo",
+      status: "Down",
+      osType: "CentOS",
     },
     {
       id: 4,
       name: "VM Debian",
       image: "/images/debian.png",
       alt: "Debian logo",
-      status: "Running",
-      ip: "12.0.0.1",
-      username: "admin",
-      password: "admin",
+      status: "Down",
+      osType: "Debian",
     },
   ]
+  const [startedVms, setStartedVms] = useState<StartedVms>({})
+  const [vms, setVms] = useState(cardMockData)
 
   const cookies = parseCookies()
   const azureToken: string = cookies["azure_token"]
 
-  const handleSubmit = async (): Promise<void> => {
+  const handleSubmit = async (osType: string, vmId: number) => {
     const values: CreateVmInitialValues = {
       jwt: azureToken,
-      osType: "Windows",
+      osType,
     }
 
-    await createVmService(values)
+    const [result] = await createVmService(values)
+
+    setStartedVms((prev) => ({
+      ...prev,
+      [vmId]: result,
+    }))
+
+    setVms((prevVms) =>
+      prevVms.map((vm) => (vm.id === vmId ? { ...vm, status: "Running" } : vm)),
+    )
   }
 
   return (
     <div className={styles.vmcardContainer}>
-      {cardMockData.map((card) => {
-        return (
-          <React.Fragment key={card.id}>
-            {card.status === "Running" ? (
-              <div key={card.id} className={styles.vmCard}>
-                <h3 className={styles.title}>{card.name}</h3>
-                <div className={styles.imagesContainer}>
-                  <Image
-                    className={styles.images}
-                    src={card.image}
-                    alt={card.alt}
-                    fill={true}
-                  />
-                </div>
-                <div className={styles.status}>
-                  <p>Status:</p>
-                  {card.status === "Running" ? (
-                    <p className={styles.running}></p>
-                  ) : (
-                    <p className={styles.down}></p>
-                  )}
-                </div>
-                <div>
-                  {card.status === "Running" && (
-                    <div className={styles.infos}>
-                      <div className={styles.infosCard}>
-                        <span>address</span>
-                        <span> {card.ip}</span>
-                      </div>
-                      <div>
-                        <span>username</span>
-                        <span> {card.username}</span>
-                      </div>
-                      <div>
-                        <span>password</span>
-                        <span> {card.password}</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
+      {vms.map((card) => (
+        <div key={card.id} className={styles.vmCard}>
+          <h3 className={styles.title}>{card.name}</h3>
+          <div className={styles.imagesContainer}>
+            <Image
+              className={styles.images}
+              src={card.image}
+              alt={card.alt}
+              fill={true}
+            />
+          </div>
+          <div className={styles.status}>
+            <p>Status:</p>
+            <p
+              className={
+                card.status === "Running" ? styles.running : styles.down
+              }
+            ></p>
+          </div>
+          {startedVms[card.id] ? (
+            <div className={styles.infos}>
+              <div className={styles.infosCard}>
+                <span>address</span>
+                <span> {startedVms[card.id].credentials.ip}</span>
               </div>
-            ) : (
-              <div key={card.id} className={styles.vmCard}>
-                <h3 className={styles.title}>{card.name}</h3>
-                <div className={styles.imagesContainer}>
-                  <Image
-                    className={styles.images}
-                    src={card.image}
-                    alt={card.alt}
-                    fill={true}
-                  />
-                </div>
-                <div className={styles.status}>
-                  <p>Status:</p>
-                  <p className={styles.down}></p>
-                </div>
-                <div className={styles.startButton}>
-                  <Button label={"Start"} onClickAction={handleSubmit} />
-                </div>
+              <div>
+                <span>username</span>
+                <span> {startedVms[card.id].credentials.username}</span>
               </div>
-            )}
-          </React.Fragment>
-        )
-      })}
+              <div>
+                <span>password</span>
+                <span> {startedVms[card.id].credentials.password}</span>
+              </div>
+            </div>
+          ) : (
+            <div className={styles.startButton}>
+              <Button
+                label={"Start"}
+                onClickAction={() => handleSubmit(card.osType, card.id)}
+                disabled={card.status === "Running"}
+              />
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   )
 }
