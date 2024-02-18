@@ -464,7 +464,7 @@ Pour entrer un peu plus dans les détails de la stack :
             }
           
   - Virtual Machines [**Start**](https://learn.microsoft.com/en-us/rest/api/dtl/virtual-machines/start?view=rest-dtl-2018-09-15&tabs=HTTP):
-    - **Start**: `https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}/start?api-version=2018-09-15
+    - **Start**: `https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}/start?api-version=2018-09-15`
         - **Description** : Permet de start une VM.
             - **Headers**:
               ```json
