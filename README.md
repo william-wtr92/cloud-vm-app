@@ -545,6 +545,12 @@ Pour entrer un peu plus dans les détails de la stack :
 
 - L'utilisateur a la possibilité de se **déconnecter**, ce qui supprime ses cookies de session et son token Azure.
 
+  
+
+https://github.com/william-wtr92/cloud-vm-app/assets/118012461/06335da2-f367-4718-9ac2-a7d9800dbaba
+
+
+
 ## Mises à jour futures
 
 - Connexion avec MSAL pour une meilleure gestion des tokens Azure.
