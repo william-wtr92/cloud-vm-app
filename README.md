@@ -214,7 +214,7 @@ Pour entrer un peu plus dans les détails de la stack :
 <br>
 
   - Login **OAuth2 Azure** et récupération des tokens JWT avec la permission d'interagir avec les VMs :
-    - **POST**: https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/token
+    - **POST**: `https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/token`
       - **Description** : Permet de se connecter à l'API d'Azure avec un utilisateur et un mot de passe.
         - **x-www-form-urlencoded**: 
           ```json
@@ -273,7 +273,7 @@ Pour entrer un peu plus dans les détails de la stack :
             // Envoi du token en réponse de la requête vers mon API backend /api/login
             res.send({ result: { jwt, azure_token: azureToken } })
   - Virtual Machines [**Create Or Update**](https://learn.microsoft.com/en-us/rest/api/dtl/virtual-machines/create-or-update?view=rest-dtl-2018-09-15&tabs=HTTP):
-      - **PUT**: https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}?api-version=2018-09-15
+      - **PUT**: `https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}?api-version=2018-09-15`
           - **Description** : Permet de créer une VM dans le Dev Test Lab.
               - **Headers**:
                 ```json
@@ -424,7 +424,7 @@ Pour entrer un peu plus dans les détails de la stack :
                 }
 
   - Virtual Machines [**Delete**](https://learn.microsoft.com/en-us/rest/api/dtl/virtual-machines/delete?view=rest-dtl-2018-09-15&tabs=HTTP):
-    - **Delete**: https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}?api-version=2018-09-15
+    - **Delete**: `https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}?api-version=2018-09-15`
       - **Description** : Permet de delete une VM.
         - **Headers**:
           ```json
@@ -464,7 +464,7 @@ Pour entrer un peu plus dans les détails de la stack :
             }
           
   - Virtual Machines [**Start**](https://learn.microsoft.com/en-us/rest/api/dtl/virtual-machines/start?view=rest-dtl-2018-09-15&tabs=HTTP):
-    - **Start**: https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}/start?api-version=2018-09-15
+    - **Start**: `https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}/start?api-version=2018-09-15
         - **Description** : Permet de start une VM.
             - **Headers**:
               ```json
@@ -474,7 +474,7 @@ Pour entrer un peu plus dans les détails de la stack :
                }
                 ```
             - Dans l'endpoint: **/api/createVm**, j'appelle avant l'envoi de la réponse à l'utilisateur une fonction qui permet le start de la VM créée, car par défaut, elle ne se lance pas automatiquement.<br><br>
-              Elle va donc regarder son statut grâce à l'API Azure : [**Get**](https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}?api-version=2018-09-15https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{name}?api-version=2018-09-15), qui va permettre d'attendre d'avoir le champ `provisioningState =  Succeeded` dans la réponse de la requête :
+              Elle va donc regarder son statut grâce à l'API Azure : [**Get**](https://learn.microsoft.com/en-us/rest/api/dtl/virtual-machines/get?view=rest-dtl-2018-09-15&tabs=HTTP), qui va permettre d'attendre d'avoir le champ `provisioningState =  Succeeded` dans la réponse de la requête :
               ```js
                > /src/utils/scheduleVmStart.ts
               
@@ -532,7 +532,7 @@ Pour entrer un peu plus dans les détails de la stack :
 ### Docker & Docker Compose
 
 - Pour le déploiement de l'application, j'ai utilisé **Docker** et **Docker Compose** pour pouvoir avoir une image de l'application et m'assurer qu'elle fonctionne dans n'importe quel environnement.
-- La base de données est généré par le **Compose** et est liée à l'application.
+- La base de données est générée par le **Compose** et est liée à l'application.
 - Les migrations de la base de données et l'ajout de data `seeds` sont faits automatiquement au lancement de la commande `docker-compose up -d` -> voir les fichiers `entrypoint.sh`, `Dockerfile`, `docker-compose.yml` pour plus de détails.
 
 ## Workflow de l'application
