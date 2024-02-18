@@ -156,7 +156,7 @@ Pour entrer un peu plus dans les détails de la stack :
   - L'assigner au groupe de ressources créé précédemment
   - Donner lui un nom, par exemple : **{nomDuGroupeDeRessource}-nsg**
   - Cliquer sur **Vérifier + créer**
-  - Regarder la vidéo suivante pour ajouter les règle que j'ai mise :
+  - Regarder la vidéo suivante pour ajouter les règle que j'ai mise dans `"Règles de sécurité de trafic entrant" -> (SSH 22, RDP 3389, VNC 5900)`
     
   https://github.com/william-wtr92/cloud-vm-app/assets/118012461/234d5264-8a1a-450e-9c60-f04cd4689ed7
   - Une fois les règles ajoutées, se rendre dans le **Virtual Network** créé précédemment
