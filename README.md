@@ -81,6 +81,10 @@ Pour entrer un peu plus dans les détails de la stack :
       
       npm run dev      // lancement du projet 
     ```
+  - Les 3 comptes sont les suivants:
+     - __Full permissions:__ owner@gmail.com , Password1234!       
+     - __1 VM preconfig accès:__ member@gmail.com , Password1234!      
+     - __0 credit (aucun accès):__ reader@gmail.com ,  Password1234!  
 
 ## Manipulations Azure
 
