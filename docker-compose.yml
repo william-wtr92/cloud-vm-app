@@ -1,0 +1,40 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_CONNECTION_HOST=db
+      - DB_CONNECTION_USER=${DB_CONNECTION_HOST_DOCKER}
+      - DB_CONNECTION_PWD=${DB_CONNECTION_PASSWORD_DOCKER}
+      - DB_CONNECTION_DB=${DB_CONNECTION_DB}
+      - SECURITY_JWT_SECRET=${SECURITY_JWT_SECRET}
+      - SECURITY_PASSWORD_PEPPER=${SECURITY_PASSWORD_PEPPER}
+      - AZURE_TENANT_URL=${AZURE_TENANT_URL}
+      - AZURE_CLIENT_ID=${AZURE_CLIENT_ID}
+      - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}
+      - AZURE_SUBSCRIPTION_ID=${AZURE_SUBSCRIPTION_ID}
+      - AZURE_PROCESSING_GROUP_NAME=${AZURE_PROCESSING_GROUP_NAME}
+      - AZURE_LABS_GROUP_NAME=${AZURE_LABS_GROUP_NAME}
+      - AZURE_VM_USERNAME=${AZURE_VM_USERNAME}
+      - AZURE_VIRTUAL_NETWORK_NAME=${AZURE_VIRTUAL_NETWORK_NAME}
+    depends_on:
+      - db
+    networks:
+      - cloud-vm-app-network
+
+  db:
+    image: "postgres:alpine"
+    environment:
+      POSTGRES_USER: ${DB_CONNECTION_HOST_DOCKER}
+      POSTGRES_PASSWORD: ${DB_CONNECTION_PASSWORD_DOCKER}
+      POSTGRES_DB: ${DB_CONNECTION_DB}
+    ports:
+      - "5432:5432"
+    networks:
+      - cloud-vm-app-network
+
+networks:
+  cloud-vm-app-network:
+    driver: bridge
