@@ -1,5 +1,5 @@
 import Image from "next/image"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { parseCookies } from "nookies"
 
 import styles from "@/styles/components/VmCard.module.css"
@@ -9,9 +9,11 @@ import {
   CreateVmInitialValues,
   StartedVms,
 } from "@/utils/validators/createVmValidator"
+import parseToken from "@/web/services/utils/parseToken"
+import { Cookies, VMCard } from "@/utils/validators/genericValidator"
 
 export const VmCard = () => {
-  const cardMockData = [
+  const cardMockData: VMCard[] = [
     {
       id: 1,
       name: "VM Windows 10",
@@ -32,7 +34,7 @@ export const VmCard = () => {
       id: 3,
       name: "VM CentOS",
       image: "/images/centos.png",
-      alt: "xfce logo",
+      alt: "CentOS logo",
       status: "Down",
       osType: "CentOS",
     },
@@ -47,11 +49,29 @@ export const VmCard = () => {
   ]
   const [startedVms, setStartedVms] = useState<StartedVms>({})
   const [vms, setVms] = useState(cardMockData)
+  const [userRole, setUserRole] = useState<string | null>(null)
 
-  const cookies = parseCookies()
+  const cookies: Cookies = parseCookies()
   const azureToken: string = cookies["azure_token"]
 
-  const handleSubmit = async (osType: string, vmId: number) => {
+  useEffect((): void => {
+    const userToken: string = cookies["token"]
+    const role: string = userToken ? parseToken(userToken).user.role : null
+
+    setUserRole(role)
+  }, [cookies])
+
+  const displayVms: VMCard[] = userRole === "owner" ? vms : [vms[1]]
+
+  if (userRole === "reader") {
+    return (
+      <div className={styles.noCreds}>
+        You do not have any credits to use VMs.
+      </div>
+    )
+  }
+
+  const handleSubmit = async (osType: string, vmId: number): Promise<void> => {
     const values: CreateVmInitialValues = {
       jwt: azureToken,
       osType,
@@ -59,28 +79,28 @@ export const VmCard = () => {
 
     const [result] = await createVmService(values)
 
-    setStartedVms((prev) => ({
+    setStartedVms((prev: StartedVms) => ({
       ...prev,
       [vmId]: result,
     }))
 
-    setVms((prevVms) =>
-      prevVms.map((vm) => (vm.id === vmId ? { ...vm, status: "Running" } : vm)),
+    setVms((prevVms: VMCard[]) =>
+      prevVms.map(
+        (vm: VMCard): VMCard =>
+          vm.id === vmId ? { ...vm, status: "Running" } : vm,
+      ),
     )
   }
 
   return (
     <div className={styles.vmcardContainer}>
-      {vms.map((card) => (
+      {displayVms.map((card: VMCard) => (
         <div key={card.id} className={styles.vmCard}>
           <h3 className={styles.title}>{card.name}</h3>
           <div className={styles.imagesContainer}>
-            <Image
-              className={styles.images}
-              src={card.image}
-              alt={card.alt}
-              fill={true}
-            />
+            <div className={styles.imagesSubContainer}>
+              <Image src={card.image} alt={card.alt} fill={true} />
+            </div>
           </div>
           <div className={styles.status}>
             <p>Status:</p>
