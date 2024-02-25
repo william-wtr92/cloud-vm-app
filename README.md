@@ -234,10 +234,10 @@ Pour entrer un peu plus dans les détails de la stack :
         - **Retour de l'API** (Token Valable 1h): 
           ```json
             {
-            "token_type": "Bearer",
-            "expires_in": 3599, 
-            "ext_expires_in": 3599, 
-            "access_token": "token..."
+                "token_type": "Bearer",
+                "expires_in": 3599, 
+                "ext_expires_in": 3599, 
+                "access_token": "token..."
             }
           ```
         - Voici l'implémentation de cette requête dans mon code backend :
