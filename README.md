@@ -175,6 +175,7 @@ Pour entrer un peu plus dans les détails de la stack :
 ## Informations
 
 - À titre informatif **les VMs mettent environ 3-4 minutes à se créer** et à être prêtes à l'usage. Donc quand les credentials sont retournées sur l'interface, il faut attendre ce délai avant de pouvoir s'y connecter.
+- !! **Ne pas éteindre le serveur de développement, car il y a des tâches planifiées qui tournent en arrière-plan pour la gestion des VMs.** !!
 - Les VMs **sont supprimés 10 minutes après la création** et non pas 10 minutes après la première connexion.
 - Les **VMs sous Windows mettent plus de temps à se créer que les VMs sous Linux**, reproduire le cas suivant si le setup est trop long :
     ```js
